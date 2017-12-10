@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-import extractors
+import models.pspnet_pytorch.extractors as extractors
 
 
 class PSPModule(nn.Module):
@@ -55,7 +55,6 @@ class PSPNet(nn.Module):
         self.drop_2 = nn.Dropout2d(p=0.15)
         self.final = nn.Sequential(
             nn.Conv2d(64, n_classes, kernel_size=1),
-            nn.LogSoftmax()
         )
 
         self.classifier = nn.Sequential(
@@ -65,7 +64,7 @@ class PSPNet(nn.Module):
         )
 
     def forward(self, x):
-        f, class_f = self.feats(x) 
+        f, class_f = self.feats(x)
         p = self.psp(f)
         p = self.drop_1(p)
 
